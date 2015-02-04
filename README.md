@@ -150,15 +150,19 @@ When using unusual properties:
 
 ``` html
 <div class="container">
-  <button />
-  <button />
+  <button class="button" />
+  <button class="button" />
 </div>
 ```
 
 ``` css
-button {
+.container {
+  overflow: hidden;
+}
 
-  // Cleared by .container overflow
+.button {
+
+  // Float cleared by .container overflow
   float: left;
 
   // Uses box-sizing: border-box
@@ -170,7 +174,7 @@ button {
 When doing calculations:
 ``` css
 // Height 50px
-button {
+.button {
 
   // Font + Padding + Border = 50px.
   font-size: 20px;
@@ -179,6 +183,8 @@ button {
 }
 ```
 
+[Float clearing](http://www.quirksmode.org/css/clearing.html)
+[Box-sizing](https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing)
 
 
 
@@ -339,10 +345,12 @@ ID's are allowed for JavaScript and fragment identifiers, but should never be us
 ### No qualifiers
 ``` css
 // No.
-div.box { ... }
+ul.nav { ... }
 ```
 
-The `div` qualifier makes this more specific than any other class applied to the element.
+The `ul` qualifier makes this more specific than any other class applied to the element and can only be overridden by an ID (bad) or using !important (bad).
+
+Furthermore, the `.nav` class cannot be reused on a non-`ul` element, such as a `nav` element.
 
 
 ### No nested wildcards
@@ -366,24 +374,6 @@ It does have a place when attempting to ensure a class will always work as expec
 
 
 
-
-<!-- ## General Principles
-
-### Location Agnostic
-
-
-### Minimal overrides
-
-
-### Bad Abstraction
-
-
-### DRY
-
-
-### Open/Closed -->
-
-
 ## BEM
 [BEM Methodology](http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/).
 
@@ -391,7 +381,7 @@ BEM stands for Block Element Modifier. It looks like this:
 
 ``` html
 <div class="Filter">
-  <div class="Filter-row Filter-row--hightlight">
+  <div class="Filter-row Filter-row--highlight">
   </div>
   <div class="Filter-row">
   </div>
@@ -600,15 +590,10 @@ Factoring out the reusable component from the CSS (in this case `.button`) and u
 
 All CSS at the Blade level should be BEM. The encapsulation provided by BEM means that no other elements can be affected by, or become dependent on, the CSS written in a particular blade.
 
-Reusable classes should be created at the App or Bladeset level
+Reusable classes should be created at the App level or in external libraries.
 
 If in doubt, package your CSS with BEM, rather than create generic classes.
 
-```
-[Expand]
-[    Expand   ]
-[       Expand      ]
-```
 
 ## Recommended Reading
 
@@ -616,3 +601,12 @@ If in doubt, package your CSS with BEM, rather than create generic classes.
 * [SuitCSS](https://github.com/suitcss/suit/blob/master/doc/naming-conventions.md)
 * [CSS Wizardry - BEM](http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/)
 * [CSS Wizardry - Code Smells](http://csswizardry.com/2012/11/code-smells-in-css/)
+
+
+
+#### TODO
+* General Principles of OOCSS
+* Location Agnostic
+* Open/Closed - Minimal Overrides
+* Bad Abstraction
+* DRY
