@@ -186,7 +186,16 @@ When doing calculations:
 [Float clearing](http://www.quirksmode.org/css/clearing.html)
 [Box-sizing](https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing)
 
+When use preprocessors (such as LESS or SASS), you can sometimes create self-documenting code:
 
+``` css
+$width: 100px;
+$border-width: 2px;
+
+.element {
+	width: $width - (2 * $border-width);
+}
+```
 
 
 ## Selectors
@@ -245,7 +254,7 @@ Aim for a compromise between describing the style and describing the use.
 ```
 
 ### Nesting
-#### Try not to nest your CSS.
+#### **Try not to nest your CSS.**
 
 [*The descendant selector (whitespace).*](https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_selectors)
 
@@ -260,7 +269,7 @@ Aim for a compromise between describing the style and describing the use.
 </header>
 ```
 
-While nesting decreases the classes required in the HTML, the CSS is now dependent on the HTML structure.
+While nesting decreases the classes required in the HTML, the CSS is now dependent on the HTML structure. In this example, `.btn` cannot be reused outside of `.block`.
 
 Could this be rewritten to make it reusable? If it is a variant of a button, initially created for this location, how about creating a variant of the button class?
 
@@ -496,41 +505,7 @@ If the class is added or removed over the life of the element (via JavaScript), 
 
 
 ### More Info
-<!-- If the child element is not specifically tied to the Block, that is if it is , it should not be an Element. -->
 A child element of a Block should only be a BEM Element (of that Block), if the element *should* only ever be used within that block.
-
-<!-- In our Filter example, we have the `Filter-row` Element. If the `Filter-row` is used for styling unique to the Filter Block, then it is correct to make it a BEM Element.
-
-``` html
-<div class="Filter">
-  <div class="Filter-row">
-    <button />
-    <button />
-  </div>
-</div>
-```
-
-However, if `Filter-row` was merely being used to clear the floats on the buttons, it should *not* be a BEM element. In this situation, a generic class (e.g. `.clearfix`) should be used/created.
-
-``` html
-<div class="Filter">
-  <div class="clearfix">
-    ...
-  </div>
-</div>
-```
-
-In the majority of cases, BEM Elements will need some generic rulesets *and* some rules specific to their function. Rather than duplicating rules in CSS, the element should be composed of several CSS classes.
-
-``` html
-<div class="Filter">
-  <div class="Filter-row clearfix">
-    ...
-  </div>
-</div>
-```
-
-Factoring out a reusable component from the CSS (in this case `.clearfix`) and leaving the styling specific to `Filter-row`, removes duplication and let's us reuse the `.clearfix` class.  -->
 
 In our Filter example, we have two buttons inside one of our `Filter-rows`.
 
@@ -567,9 +542,9 @@ If the buttons are generic and used in multiple places, a generic class (e.g. `.
 </div>
 ```
 
-The `.button` CSS should be flexible enough to allow the `button` class to be used in a variety of situations. Aka Location agnostic - not dependent on it's container
+The `.button` CSS should be flexible enough to allow the `button` class to be used in a variety of situations. Aka Location agnostic (not dependent on it's container).
 
-In the majority of cases, elements in a BEM Block will need some generic rulesets *and* some rules specific to their function. Rather than duplicating rules in CSS, the element can be 'composed' with several CSS classes.
+In the majority of cases, elements in a BEM Block will need some generic rulesets *and* some rules specific to their location. Rather than duplicating rules in CSS, the element can be 'composed' with several CSS classes.
 
 ``` html
 <div class="Filter">
@@ -595,16 +570,17 @@ Reusable classes should be created at the App level or in external libraries.
 If in doubt, package your CSS with BEM, rather than create generic classes.
 
 
-## Recommended Reading
+## Further Reading
 
 * [CSS Guidelines](http://cssguidelin.es/)
-* [SuitCSS](https://github.com/suitcss/suit/blob/master/doc/naming-conventions.md)
 * [CSS Wizardry - BEM](http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/)
 * [CSS Wizardry - Code Smells](http://csswizardry.com/2012/11/code-smells-in-css/)
+* [The SASS Way - The Inception Rule](http://thesassway.com/beginner/the-inception-rule)
+* [Drew Barontini - Single Responsibility](http://drewbarontini.com/articles/single-responsibility/)
+* [SMACSS - Applicability](https://smacss.com/book/applicability)
 
 
-
-#### TODO
+## TODO
 * General Principles of OOCSS
 * Location Agnostic
 * Open/Closed - Minimal Overrides
