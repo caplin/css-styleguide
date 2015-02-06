@@ -251,69 +251,20 @@ If the class is added or removed over the life of the element (via JavaScript), 
 
 <!--- TODO --->
 
+# Reusable Components
+
+<!--- TODO When to use, how to name --->
+
 # Architecture
 
 All CSS at the Blade level should be BEM. The encapsulation provided by BEM means that no other elements can be affected by, or become dependent on, the CSS written in a particular blade.
 
-Reusable classes should be created at the App level or in external libraries.
+Reusable classes should be at the App level or in external libraries.
 
-If in doubt, package your CSS with BEM, rather than create generic classes.
+If in doubt, package CSS in the Blade with BEM, instead of creating App level CSS.
 
 
 # Selectors
-
-<!--- TODO Move this to theory --->
-
-The selectors used when creating rulesets should match the *intent* behind the ruleset.
-
-For example, when styling a new navigation (which happens to be in the footer):
-``` css
-/* This will style every anchor in the footer, when the intent was only to style links in a secondary navigation. */
-footer a { ... }
-
-/* Better. The secondary nav can now be used elsewhere on the page. */
-.SecondaryNav a { ... }
-
-/* Best. This does not select all anchors in the SecondaryNav, some of which may be used for other purposes. */
-.SecondaryNav-link { ... }
-```
-
-``` html
-<nav class="SecondaryNav">
-  <a class="SecondaryNav-link" />
-  <a class="SecondaryNav-link" />
-  <a class="SecondaryNav-socialIcon" />
-</nav>
-```
-
-> There are only two hard things in Computer Science: cache invalidation and naming things.
-
-Classes should not describe the exact style being applied, as they cannot be changed:
-``` css
-.blue { color: blue; }
-
-/* After theming */
-.blue { color: red; }
-```
-
-Classes should not be contextual, as they cannot be reused:
-``` css
-.footer-color { color: blue; }
-```
-
-``` html
-<header>
-  <nav>
-    <a class="footer-color" />
-  </nav>
-</header>
-```
-
-Aim for a compromise between describing the style and describing the use.
-
-``` css
-.Nav-link { color: blue; }
-```
 
 ### Nesting
 #### **Try not to nest your CSS.**
@@ -348,35 +299,8 @@ Could this be rewritten to make it reusable?
 </header>
 ```
 
-### Specificity
-<!--- TODO Move this to theory --->
-Specificity is increased when the descendant selector is used.
-``` css
-/* This: */
-.Block a { ... }
-
-/* Is more specific than this: */
-.Block-link { ... }
-
-/* Now you have a specificity war with your own code, leading to either: */
-header .Block-link
-a.Block-link { ... }
-.Block-link { ... !important }
-
-/* And the cycle will continue... */
-```
 
 
-``` css
-/* Can no longer be used outside header */
-header .Block-link
-
-/* Can no longer be used for non-anchors */
-a.Block-link { ... }
-
-/* Will cause specificity problems if reused */
-.Block-link { ... !important } 
-```
 
 ### Direct Child
 The direct child selector `>` can be used to improve performance and limit the cascade of styles (good). But what if the DOM needs to be changed and another layer of HTML introduced? Now the CSS needs to be modified for what should be a trivial change.
@@ -450,6 +374,88 @@ It does have a place when attempting to ensure a class will always work as expec
 ```
 
 # Theory
+
+## Selector Intent
+The selectors used when creating rulesets should match the *intent* behind the ruleset.
+
+For example, when styling a new navigation (which happens to be in the footer):
+``` css
+/* This will style every anchor in the footer, when the intent was only to style links in a secondary navigation. */
+footer a { ... }
+
+/* Better. The secondary nav can now be used elsewhere on the page. */
+.SecondaryNav a { ... }
+
+/* Best. This does not select all anchors in the SecondaryNav, some of which may be used for other purposes. */
+.SecondaryNav-link { ... }
+```
+
+``` html
+<nav class="SecondaryNav">
+  <a class="SecondaryNav-link" />
+  <a class="SecondaryNav-link" />
+  <a class="SecondaryNav-socialIcon" />
+</nav>
+```
+
+> There are only two hard things in Computer Science: cache invalidation and naming things.
+
+Classes should not describe the exact style being applied, as they cannot be changed:
+``` css
+.blue { color: blue; }
+
+/* After theming */
+.blue { color: red; }
+```
+
+Classes should not be contextual, as they cannot be reused:
+``` css
+.footer-color { color: blue; }
+```
+
+``` html
+<header>
+  <nav>
+    <a class="footer-color" />
+  </nav>
+</header>
+```
+
+Aim for a compromise between describing the style and describing the use.
+
+``` css
+.Nav-link { color: blue; }
+```
+
+
+## Specificity
+Specificity is increased when the descendant selector is used.
+``` css
+/* This: */
+.Block a { ... }
+
+/* Is more specific than this: */
+.Block-link { ... }
+
+/* Now you have a specificity war with your own code, leading to either: */
+header .Block-link
+a.Block-link { ... }
+.Block-link { ... !important }
+
+/* And the cycle will continue... */
+```
+
+
+``` css
+/* Can no longer be used outside header */
+header .Block-link
+
+/* Can no longer be used for non-anchors */
+a.Block-link { ... }
+
+/* Will cause specificity problems if reused */
+.Block-link { ... !important } 
+```
 
 
 ## Further BEM
@@ -531,23 +537,26 @@ When looking at CSS, you cannot know:
 * What the intended effect is.
 * What might break when you change it.
 
-One defense is good commenting.
+**If there are any exceptions or unusual techniques being used, comment them.**
 
-When using unusual properties:
+When building generic or reusable components, commenting is important for maintenance.
 
+
+<!--- TODO generic naming --->
 ``` html
-<div class="container">
-  <button class="button" />
-  <button class="button" />
+<div class="btn-group">
+  <button class="btn" />
+  <button class="btn" />
 </div>
 ```
 
+Uncommon rules or interactions:
 ``` css
-.container {
+.btn-group {
   overflow: hidden;
 }
 
-.button {
+.btn {
 
   /* Float cleared by .container overflow */
   float: left;
@@ -560,11 +569,15 @@ When using unusual properties:
 
 When doing calculations:
 ``` css
-/* Height 50px */
-.button {
+.btn-group {
+  height: 50px;
+}
 
-  /* Font + Padding + Border = 50px. */
+.btn {
+
+  /* Font + Padding + Border => height of 50px. */
   font-size: 20px;
+  line-height: 1em;
   padding: 14px;
   border: 1px;
 }
