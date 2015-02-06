@@ -1,19 +1,18 @@
-# CSS Styleguide
+<!---
 1. [Formatting](#formatting)
 2. [Whitespace](#whitespace)
 3. [Commenting](#commenting)
 4. [Selectors](#selectors)
 5. [BEM](#bem)
 6. [Architecture](#architecture)
+--->
 
-
-## Formatting
-
+# Formatting
 For clarity and consistency:
 * Indent with tabs. [So it is written, so let it be done](http://caplin.github.io/StyleGuide/).
 * Opening brace on selector line.
 * Closing brace on new line.
-* A single space before #the opening bracket.
+* A single space before the opening bracket.
 * A single space after the colon.
 
 ``` css
@@ -23,8 +22,8 @@ For clarity and consistency:
 ```
 
 These rules simplify diffs by ensuring only one change per line:
-* All declarations on separate lines.
-* Multiple selectors on separate lines.
+* All rules on separate lines.
+* All selectors on separate lines.
 
 ``` css
 .selector1,
@@ -34,7 +33,7 @@ These rules simplify diffs by ensuring only one change per line:
 }
 ```
 
-The only exception is a class with one declaration which performs a specific function. This can be on a single line:
+The only exception is a class with one rule and one selector which performs a specific function. This can be on a single line:
 
 ``` css
 .red { color: red; }
@@ -44,7 +43,7 @@ Comments are preceded by a newline.
 ``` css
 .class {
 
-  // Hello World
+  /* Hello World */
   property: value;
 }
 ```
@@ -68,7 +67,7 @@ Comments are preceded by a newline.
 }
 ```
 
-## Whitespace
+# Whitespace
 
 CSS is minified and stripped of whitespace and comments for production, so make *liberal* use of them.
 
@@ -77,16 +76,16 @@ Group related rules together and separate with newlines:
 ``` css
 .selector {
 
-  // Box model
+  /* Box model */
   display: inline-block;
   margin: 0 auto;
   padding: 10px 20px;
 
-  // Styling
+  /* Styling */
   color: #FFF;
   background-color: #000;
 
-  // Fonts
+  /* Fonts */
   font-size: 14px;
   font-weight: bold;
 }
@@ -119,7 +118,6 @@ Separate different components with a block comment and 3 lines of whitespace:
 ``` css
 /**
  * MyButtons
- * These are my buttons. Don't touch 'em.
  */
 .MyButtons { ... }
 
@@ -131,271 +129,16 @@ Separate different components with a block comment and 3 lines of whitespace:
 .MyDivs { ... }
 ```
 
-
-
-
-## Commenting
-
-When looking at CSS, you cannot know:
-
-* Where it is being used.
-* What other CSS relies on it.
-* What it relies on.
-* What the intended effect is.
-* What might break when you change it.
-
-One defense is good commenting.
-
-When using unusual properties:
-
-``` html
-<div class="container">
-  <button class="button" />
-  <button class="button" />
-</div>
-```
-
-``` css
-.container {
-  overflow: hidden;
-}
-
-.button {
-
-  // Float cleared by .container overflow
-  float: left;
-
-  // Uses box-sizing: border-box
-  border: 2px;
-  width: 50%;
-}
-```
-
-When doing calculations:
-``` css
-// Height 50px
-.button {
-
-  // Font + Padding + Border = 50px.
-  font-size: 20px;
-  padding: 14px;
-  border: 1px;
-}
-```
-
-[Float clearing](http://www.quirksmode.org/css/clearing.html)
-[Box-sizing](https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing)
-
-When use preprocessors (such as LESS or SASS), you can sometimes create self-documenting code:
-
-``` css
-$width: 100px;
-$border-width: 2px;
-
-.element {
-	width: $width - (2 * $border-width);
-}
-```
-
-
-## Selectors
-
-### Intent
-
-The selectors used when creating rulesets should match the *intent* behind the ruleset.
-
-For example, when styling a new navigation (which happens to be in the footer):
-``` css
-// This will style every anchor in the footer, when the intent was only to style links in a secondary navigation.
-footer a { ... }
-
-// Better. The secondary nav can now be used elsewhere on the page.
-.secondary-nav a { ... }
-
-// Best. This does not select all anchors in the SecondaryNav, some of which may be used for other purposes.
-.secondaryNav-link { ... }
-```
-
-``` html
-<nav class="secondaryNav">
-  <a class="secondaryNav-link" />
-  <a class="secondaryNav-link" />
-  <a class="secondaryNav-socialIcon" />
-</nav>
-```
-
-> There are only two hard things in Computer Science: cache invalidation and naming things.
-
-Classes should not describe the exact style being applied, as they cannot be changed:
-``` css
-.blue { color: blue; }
-
-// After theming
-.blue { color: red; }
-```
-
-Classes should not be contextual, as they cannot be reused:
-``` css
-.footer-color { color: blue; }
-```
-
-``` html
-<header>
-  <nav>
-    <a class="footer-color" />
-  </nav>
-</header>
-```
-
-Aim for a compromise between describing the style and describing the use.
-
-``` css
-.nav-link { color: blue; }
-```
-
-### Nesting
-#### **Try not to nest your CSS.**
-
-[*The descendant selector (whitespace).*](https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_selectors)
-
-``` css
-.btn { ... // Default styling }
-.block button { ... }
-```
-
-``` html
-<header class="block">
-  <button class="btn" />
-</header>
-```
-
-While nesting decreases the classes required in the HTML, the CSS is now dependent on the HTML structure. In this example, `.btn` cannot be reused outside of `.block`.
-
-Could this be rewritten to make it reusable? If it is a variant of a button, initially created for this location, how about creating a variant of the button class?
-
-``` css
-.btn { ... }
-.btn--variantA { ... }
-```
-
-``` html
-<header class="block">
-  <button class="btn btn--variantA" />
-</header>
-```
-
-#### Specificity
-Specificity is increased when the descendant selector is used.
-``` css
-// This:
-.block a { ... }
-
-// Is more specific than this:
-.block-link { ... }
-
-// Now you have a specificity war with your own code, leading to either:
-header .block-link
-a.block-link { ... }
-.block-link { ... !important }
-
-// And the cycle will continue...
-```
-
-
-``` css
-header .block-link // Can no longer be used outside header
-a.block-link { ... } // Can no longer be used for non-anchors
-.block-link { ... !important } // Can cause specificity problems if reused
-```
-
-#### Direct Child
-The direct child selector `>` can be used to improve performance and limit the cascade of styles (good). But what if the DOM needs to be changed and another layer of HTML introduced? Now the CSS needs to be modified for what should be a trivial change.
-
-For example, moving from this:
-
-``` html
-<header>
-  <div class="logo" />
-</header>
-```
-
-``` css
-header > .logo { ... }
-```
-
-To this:
-``` html
-<header>
-  <div class="grid-left">
-    <div class="logo" />
-  </div>
-  <div class="grid-right">
-    <div class="banner" />
-  </div>
-</header>
-```
-
-Will break your CSS.
-
-
-### No ID's.
-ID's are allowed for JavaScript and fragment identifiers, but should never be used in CSS.
-
-* ID's override any styles applied by classes and then require the use of even more specific selectors to override the ID's rule (and so on).
-* Only one ID can exist on a page, therefore the ruleset cannot be used more than once.
-* JavaScript ID's cannot be changed or removed for fear of altering styling.
-
-``` css
-// The performance of these are virtually identical.
-#block { ... }
-.block { ... }
-```
-
-### No qualifiers
-``` css
-// No.
-ul.nav { ... }
-```
-
-The `ul` qualifier makes this more specific than any other class applied to the element and can only be overridden by an ID (bad) or using !important (bad).
-
-Furthermore, the `.nav` class cannot be reused on a non-`ul` element, such as a `nav` element.
-
-
-### No nested wildcards
-``` css
-.block * { ... }
-```
-
-While the wildcard does not *always* have the significant performance impact it used to, there are very few cases where it is the correct course of action. 
-
-[Non-nested wildcards can be used sparingly.](http://www.paulirish.com/2012/box-sizing-border-box-ftw)
-
-
-### No reactive !important
-
-!important is the nuclear option when it comes to specificity. If following the rules above, it should never need to be used reactively. That is, to override rule already being applied.
-
-It does have a place when attempting to ensure a class will always work as expected. For example:
-``` css
-.hidden { display: none !important; }
-```
-
-
-
-## BEM
+# BEM
 [BEM Methodology](http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/).
 
 BEM stands for Block Element Modifier. It looks like this:
 
 ``` html
 <div class="Filter">
-  <div class="Filter-row Filter-row--highlight">
-  </div>
-  <div class="Filter-row">
-  </div>
-  <div class="Filter-row">
-  </div>
+  <div class="Filter-row" />
+  <div class="Filter-row Filter-row--highlight" />
+  <div class="Filter-row" />
 </div>
 ```
 
@@ -419,7 +162,7 @@ The single root element for every Block.
 The Block should be named with PascalCase (camelCase with a capitalised first letter).
 Every selector related to the Block should be prepended by the Block name, this namespaces the Block and ensures styles do not leak or conflict with other parts of the page.
 ``` html
-<div class="Filter"/>
+<div class="Filter" />
 ```
 ``` css
 .Filter {...}
@@ -450,11 +193,11 @@ Elements within a Block should be named with camelCase and separated from the Bl
 </div>
 ```
 ``` css
-// Incorrect
+/* Incorrect */
 .Filter-outerElement { ... }
 .Filter-outerElement-innerElement { ... }
 
-// Correct
+/* Correct */
 .Filter-outerElement { ... }
 .Filter-innerElement { ... }
 ```
@@ -474,7 +217,9 @@ You can have modifiers on Elements:
 
 ``` html
 <div class="Filter">
-  <div class="Filter-element--large" />
+  <div class="Filter-element" />
+  <div class="Filter-element Filter-element--large" />
+  <div class="Filter-element" />
 </div>
 ```
 ``` css
@@ -483,28 +228,231 @@ You can have modifiers on Elements:
 ```
 
 ### States
-States follow the same naming as Modifiers, but are prepended by `is-`.
 ``` html
-<div class="Filter Filter--is-selected" />
+<div class="Filter is-selected" />
 ```
 ``` css
 .Filter {...}
-.Filter--is-selected { border: red; }
+.Filter.is-selected { border: red; }
 ```
+**The State class must chained with the relevant Block or Element.**
+
 States are a variation on modifiers - in the original BEM, there is no differentiation.
 
 If the class is added or removed over the life of the element (via JavaScript), it is a State.
 
-*Note: If there are several common States being used in an application, it may be wise to create a reusable set. For example:*
+*If there are several common States being used in an application, it may be wise to create a generic set. For example:*
 
 ``` css
 .is-hidden { display: none !important; }
 ```
 
-*Care should be taken to keep these 'global' States reusable.*
+## Blockception
+
+<!--- TODO --->
+
+# Architecture
+
+All CSS at the Blade level should be BEM. The encapsulation provided by BEM means that no other elements can be affected by, or become dependent on, the CSS written in a particular blade.
+
+Reusable classes should be created at the App level or in external libraries.
+
+If in doubt, package your CSS with BEM, rather than create generic classes.
 
 
-### More Info
+# Selectors
+
+<!--- TODO Move this to theory --->
+
+The selectors used when creating rulesets should match the *intent* behind the ruleset.
+
+For example, when styling a new navigation (which happens to be in the footer):
+``` css
+/* This will style every anchor in the footer, when the intent was only to style links in a secondary navigation. */
+footer a { ... }
+
+/* Better. The secondary nav can now be used elsewhere on the page. */
+.SecondaryNav a { ... }
+
+/* Best. This does not select all anchors in the SecondaryNav, some of which may be used for other purposes. */
+.SecondaryNav-link { ... }
+```
+
+``` html
+<nav class="SecondaryNav">
+  <a class="SecondaryNav-link" />
+  <a class="SecondaryNav-link" />
+  <a class="SecondaryNav-socialIcon" />
+</nav>
+```
+
+> There are only two hard things in Computer Science: cache invalidation and naming things.
+
+Classes should not describe the exact style being applied, as they cannot be changed:
+``` css
+.blue { color: blue; }
+
+/* After theming */
+.blue { color: red; }
+```
+
+Classes should not be contextual, as they cannot be reused:
+``` css
+.footer-color { color: blue; }
+```
+
+``` html
+<header>
+  <nav>
+    <a class="footer-color" />
+  </nav>
+</header>
+```
+
+Aim for a compromise between describing the style and describing the use.
+
+``` css
+.Nav-link { color: blue; }
+```
+
+### Nesting
+#### **Try not to nest your CSS.**
+
+[*The descendant selector (whitespace).*](https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_selectors)
+
+``` css
+.btn { ... /* Default styling */ }
+.Block .btn { ... }
+```
+
+``` html
+<header class="Block">
+  <button class="btn" />
+</header>
+```
+
+While nesting decreases the classes required in the HTML, the CSS is now dependent on the HTML structure. 
+
+It is often the case that variants of elements are created for a specific situation and later reused elsewhere. In this example, `.btn` cannot be reused outside of `.block`.
+
+Could this be rewritten to make it reusable?
+
+``` css
+.btn { ... }
+.btn--variantA { ... }
+```
+
+``` html
+<header class="Block">
+  <button class="btn btn--variantA" />
+</header>
+```
+
+### Specificity
+<!--- TODO Move this to theory --->
+Specificity is increased when the descendant selector is used.
+``` css
+/* This: */
+.Block a { ... }
+
+/* Is more specific than this: */
+.Block-link { ... }
+
+/* Now you have a specificity war with your own code, leading to either: */
+header .Block-link
+a.Block-link { ... }
+.Block-link { ... !important }
+
+/* And the cycle will continue... */
+```
+
+
+``` css
+/* Can no longer be used outside header */
+header .Block-link
+
+/* Can no longer be used for non-anchors */
+a.Block-link { ... }
+
+/* Will cause specificity problems if reused */
+.Block-link { ... !important } 
+```
+
+### Direct Child
+The direct child selector `>` can be used to improve performance and limit the cascade of styles (good). But what if the DOM needs to be changed and another layer of HTML introduced? Now the CSS needs to be modified for what should be a trivial change.
+
+For example, moving from this:
+
+``` html
+<header class="Header">
+  <img src="..." />
+</header>
+```
+
+``` css
+.Header > img { ... }
+```
+
+To this:
+``` html
+<header class="Header">
+  <div class="grid">
+    <img src="..." />
+    <p>Lorem ipsum</p>
+  </div>
+</header>
+```
+
+Will break your CSS.
+
+
+### No ID's.
+ID's are allowed for JavaScript and fragment identifiers, but should never be used in CSS.
+
+* ID's override any styles applied by classes and then require the use of even more specific selectors to override the ID's rule (and so on).
+* Only one ID can exist on a page, therefore the ruleset cannot be used more than once.
+* JavaScript ID's cannot be changed or removed for fear of altering styling.
+
+``` css
+/* The performance of these are virtually identical. */
+#Block { ... }
+.Block { ... }
+```
+
+### No qualifiers
+``` css
+/* No. */
+ul.Nav { ... }
+```
+
+The `ul` qualifier makes this more specific than any other class applied to the element and can only be overridden by an ID (bad) or using !important (bad).
+
+Furthermore, the `.Nav` class cannot be reused on a non-`ul` element, such as a `nav` element.
+
+
+### No nested wildcards
+``` css
+.Block * { ... }
+```
+
+While the wildcard does not *always* have the significant performance impact it used to, there are very few cases where it is the correct course of action. 
+
+[Non-nested wildcards can be used sparingly.](http://www.paulirish.com/2012/box-sizing-border-box-ftw)
+
+
+### No reactive !important
+
+!important is the nuclear option when it comes to specificity. If following the rules above, it should never need to be used reactively. That is, to override rule already being applied.
+
+It does have a place when attempting to ensure a class will always work as expected. For example:
+``` css
+.hidden { display: none !important; }
+```
+
+# Theory
+
+
+## Further BEM
 A child element of a Block should only be a BEM Element (of that Block), if the element *should* only ever be used within that block.
 
 In our Filter example, we have two buttons inside one of our `Filter-rows`.
@@ -560,17 +508,85 @@ Factoring out the reusable component from the CSS (in this case `.button`) and u
 
 *Note: Composing the style of an element with multiple classes is one of the main principles of [OOCSS](http://appendto.com/2014/04/oocss/). The other is the separation of structural and skin classes.*
 
+## General Principles of OOCSS
+<!--- TODO --->
+## Location Agnostic
+<!--- TODO --->
+## Open/Closed - Minimal Overrides
+<!--- TODO --->
+## Bad Abstraction
+<!--- TODO --->
+## DRY
+<!--- TODO --->
 
-## Architecture
-
-All CSS at the Blade level should be BEM. The encapsulation provided by BEM means that no other elements can be affected by, or become dependent on, the CSS written in a particular blade.
-
-Reusable classes should be created at the App level or in external libraries.
-
-If in doubt, package your CSS with BEM, rather than create generic classes.
 
 
-## Further Reading
+
+# Commenting
+When looking at CSS, you cannot know:
+
+* Where it is being used.
+* What other CSS relies on it.
+* What it relies on.
+* What the intended effect is.
+* What might break when you change it.
+
+One defense is good commenting.
+
+When using unusual properties:
+
+``` html
+<div class="container">
+  <button class="button" />
+  <button class="button" />
+</div>
+```
+
+``` css
+.container {
+  overflow: hidden;
+}
+
+.button {
+
+  /* Float cleared by .container overflow */
+  float: left;
+
+  /* Uses box-sizing: border-box */
+  border: 2px;
+  width: 50%;
+}
+```
+
+When doing calculations:
+``` css
+/* Height 50px */
+.button {
+
+  /* Font + Padding + Border = 50px. */
+  font-size: 20px;
+  padding: 14px;
+  border: 1px;
+}
+```
+
+[Float clearing](http://www.quirksmode.org/css/clearing.html)
+[Box-sizing](https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing)
+
+When use preprocessors (such as LESS or SASS), you can sometimes create self-documenting code:
+
+``` css
+$width: 100px;
+$border-width: 2px;
+
+.element {
+  width: $width - (2 * $border-width);
+}
+```
+
+
+
+# Further Reading
 
 * [CSS Guidelines](http://cssguidelin.es/)
 * [CSS Wizardry - BEM](http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/)
@@ -578,11 +594,3 @@ If in doubt, package your CSS with BEM, rather than create generic classes.
 * [The SASS Way - The Inception Rule](http://thesassway.com/beginner/the-inception-rule)
 * [Drew Barontini - Single Responsibility](http://drewbarontini.com/articles/single-responsibility/)
 * [SMACSS - Applicability](https://smacss.com/book/applicability)
-
-
-## TODO
-* General Principles of OOCSS
-* Location Agnostic
-* Open/Closed - Minimal Overrides
-* Bad Abstraction
-* DRY
