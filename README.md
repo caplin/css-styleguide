@@ -156,7 +156,7 @@ In this example, we want the first row to stand out, hence the modifier of `--hi
 *The syntax defined here differs from the original BEM (see [SuitCSS](https://github.com/suitcss/suit/blob/master/doc/naming-conventions.md)), but the end result is the same.*
 
 
-### Block
+### Blocks
 The single root element for every Block.
 
 The Block should be named with PascalCase (camelCase with a capitalised first letter).
@@ -247,9 +247,24 @@ If the class is added or removed over the life of the element (via JavaScript), 
 .is-hidden { display: none !important; }
 ```
 
-## Blockception
+### Blockception
 
-<!--- TODO --->
+Blocks can be used inside other Blocks.
+
+``` html
+<!-- Outer Block -->
+<div class="Filter">
+  <div class="Filter-element">
+	 <!-- Inner Block -->
+	 <a class="Button" />
+  </div>
+</div>
+```
+
+The `Button` Block will not know what styles or dimensions are applied to the `Filter` Block (if it needed to, `Button` should instead be an Element of the `Filter` Block).
+
+Therefore the `Button` Block must be flexibly written and not depend on it's location in the DOM.
+
 
 # Reusable Components
 
@@ -514,10 +529,9 @@ Factoring out the reusable component from the CSS (in this case `.button`) and u
 
 *Note: Composing the style of an element with multiple classes is one of the main principles of [OOCSS](http://appendto.com/2014/04/oocss/). The other is the separation of structural and skin classes.*
 
-## General Principles of OOCSS
-<!--- TODO --->
 ## Location Agnostic
-<!--- TODO --->
+CSS is intended to be reusable. 
+
 ## Open/Closed - Minimal Overrides
 <!--- TODO --->
 ## Bad Abstraction
@@ -539,10 +553,6 @@ When looking at CSS, you cannot know:
 
 **If there are any exceptions or unusual techniques being used, comment them.**
 
-When building generic or reusable components, commenting is important for maintenance.
-
-
-<!--- TODO generic naming --->
 ``` html
 <div class="btn-group">
   <button class="btn" />
@@ -561,7 +571,7 @@ Uncommon rules or interactions:
   /* Float cleared by .container overflow */
   float: left;
 
-  /* Uses box-sizing: border-box */
+  /* box-sizing: border-box, so width = 100% */
   border: 2px;
   width: 50%;
 }
