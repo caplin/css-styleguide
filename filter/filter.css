@@ -1,0 +1,19 @@
+.Filter {
+	width: 280px;
+	padding: 8px 0;
+	border-radius: 2px;
+}
+
+.Filter-row {
+	padding: 8px 15px;
+}
+
+.Filter-row.skin--alt {
+	border-style: solid none;
+}
+
+.Filter-row--confirm {
+	text-align: right;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}

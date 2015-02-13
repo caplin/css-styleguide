@@ -1,0 +1,112 @@
+/**
+* Base
+**/
+html { box-sizing: border-box; }
+*, *:before, *:after { box-sizing: inherit; }
+
+.strip {
+	display: block !important;
+	width: 100% !important;
+}
+
+
+
+/**
+* Inputs
+**/
+.input[type="text"] {
+	padding: 5px 8px;
+	border: 1px solid #CECECE;
+	border-radius: 2px;
+	box-shadow: inset 0px 0px 2px 0px rgba(50, 50, 50, 0.75);
+}
+
+
+
+
+/**
+* Skins
+**/
+.skin--main {
+	color: #333;
+	background: #F5F5F5;
+	border: 1px solid #CECECE;
+}
+
+.skin--alt {
+	color: #333;
+	background: #EEE;
+	border: 1px solid #BBB;
+}
+
+
+
+
+/**
+* Buttons
+**/
+.btn {
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	white-space: nowrap;
+	cursor: pointer;
+	outline: none;
+
+	line-height: 1;
+	font-size: 12px;
+	height: 30px;
+	padding: 8px 16px;
+	border: 1px solid transparent;
+}
+
+
+.btn--default,
+.btn--primary {
+	color: #FFF;
+	border-radius: 5px;
+	transition: opacity 0.2s ease-out;
+}
+
+.btn--default:hover,
+.btn--primary:hover {
+	opacity: 0.8;
+}
+
+.btn--default {
+	background-color: #666;
+}
+
+.btn--primary {
+	background-color: #333;
+}
+
+
+.btn--option {
+	font-weight: bold;
+	padding: 8px 0;
+	color: #333;
+	background: #FFF;
+	border: 1px solid #CECECE;
+	border-radius: 2px;
+}
+
+.btn--option.is-active {
+	border-bottom: 3px solid #000;
+}
+
+
+
+
+/**
+* Grid
+**/
+.row { overflow: hidden; }
+.col-1-of-3 {
+	float: left;
+	width: 30%;
+	margin-left: 5%;
+}
+.col-1-of-3:first-child {
+	margin-left: 0;
+}
