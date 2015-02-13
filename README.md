@@ -48,7 +48,7 @@ Comments are preceded by a newline.
 }
 ```
 
-**WRONG:**
+**Wrong:**
 
 ``` css
 .class
@@ -65,68 +65,6 @@ Comments are preceded by a newline.
 .class {
   property:value;
 }
-```
-
-# Whitespace
-
-CSS is minified and stripped of whitespace and comments for production, so make *liberal* use of them.
-
-Group related rules together and separate with newlines:
-
-``` css
-.selector {
-
-  /* Box model */
-  display: inline-block;
-  margin: 0 auto;
-  padding: 10px 20px;
-
-  /* Styling */
-  color: #FFF;
-  background-color: #000;
-
-  /* Fonts */
-  font-size: 14px;
-  font-weight: bold;
-}
-```
-
-Separate closely related rulesets by a single line of whitespace:
-``` css
-.MyButton {
-  ...
-}
-
-.MyButton--large {
-
-}
-```
-
-Separate loosly related rulesets by two lines of whitespace:
-``` css
-.MyButton { ... }
-
-.MyButton--large { ... }
-
-
-.MyOtherButton { ... }
-
-.MyOtherButton--large { ... }
-```
-
-Separate different components with a block comment and 3 lines of whitespace:
-``` css
-/**
- * MyButtons
- */
-.MyButtons { ... }
-
-
-
-/**
- * MyDivs
- */
-.MyDivs { ... }
 ```
 
 # BEM
@@ -241,10 +179,16 @@ States are a variation on modifiers - in the original BEM, there is no different
 
 If the class is added or removed over the life of the element (via JavaScript), it is a State.
 
-*If there are several common States being used in an application, it may be wise to create a generic set. For example:*
+*If there are several common States being used in an application, you may wish to create States to be reused across many Blocks.*
+
+Use the same notation, prefixed with: `u-`
 
 ``` css
-.is-hidden { display: none !important; }
+.u-is-hidden { display: none !important; }
+```
+
+``` html
+<div class="Popout u-is-hidden" />
 ```
 
 ### Blockception
@@ -272,7 +216,7 @@ Therefore the `Button` Block must be flexibly written and not depend on it's loc
 
 # Architecture
 
-All CSS at the Blade level should be BEM. The encapsulation provided by BEM means that no other elements can be affected by, or become dependent on, the CSS written in a particular blade.
+All CSS at the Blade level should be BEM. The encapsulation provided by BEM means that no other elements can be affected by, or become dependent on, the CSS written in a particular blade. You should be able to add, modify or delete BEM Blocks without being concerned of any impact on other Blocks or parts of the App.
 
 Reusable classes should be at the App level or in external libraries.
 
@@ -282,7 +226,7 @@ If in doubt, package CSS in the Blade with BEM, instead of creating App level CS
 # Selectors
 
 ### Nesting
-#### **Try not to nest your CSS.**
+#### **Don't nest your CSS.**
 
 [*The descendant selector (whitespace).*](https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_selectors)
 
@@ -387,6 +331,8 @@ It does have a place when attempting to ensure a class will always work as expec
 ``` css
 .hidden { display: none !important; }
 ```
+
+
 
 # Theory
 
@@ -529,18 +475,70 @@ Factoring out the reusable component from the CSS (in this case `.button`) and u
 
 *Note: Composing the style of an element with multiple classes is one of the main principles of [OOCSS](http://appendto.com/2014/04/oocss/). The other is the separation of structural and skin classes.*
 
-## Location Agnostic
-CSS is intended to be reusable. 
-
-## Open/Closed - Minimal Overrides
-<!--- TODO --->
-## Bad Abstraction
-<!--- TODO --->
-## DRY
-<!--- TODO --->
 
 
 
+# Whitespace
+
+CSS is minified and stripped of whitespace and comments for production, so make *liberal* use of them.
+
+Group related rules together and separate with newlines:
+
+``` css
+.selector {
+
+  /* Box model */
+  display: inline-block;
+  margin: 0 auto;
+  padding: 10px 20px;
+
+  /* Styling */
+  color: #FFF;
+  background-color: #000;
+
+  /* Fonts */
+  font-size: 14px;
+  font-weight: bold;
+}
+```
+
+Separate closely related rulesets by a single line of whitespace:
+``` css
+.MyButton {
+  ...
+}
+
+.MyButton--large {
+
+}
+```
+
+Separate loosly related rulesets by two lines of whitespace:
+``` css
+.MyButton { ... }
+
+.MyButton--large { ... }
+
+
+.MyOtherButton { ... }
+
+.MyOtherButton--large { ... }
+```
+
+Separate different components with a block comment and 3 lines of whitespace:
+``` css
+/**
+ * MyButtons
+ */
+.MyButtons { ... }
+
+
+
+/**
+ * MyDivs
+ */
+.MyDivs { ... }
+```
 
 # Commenting
 When looking at CSS, you cannot know:
@@ -607,6 +605,16 @@ $border-width: 2px;
 }
 ```
 
+
+## Location Agnostic
+CSS is intended to be reusable. 
+
+## Open/Closed - Minimal Overrides
+<!--- TODO --->
+## Bad Abstraction
+<!--- TODO --->
+## DRY
+<!--- TODO --->
 
 
 # Further Reading
