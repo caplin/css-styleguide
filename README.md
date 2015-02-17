@@ -178,19 +178,51 @@ States are a variation on modifiers - in the original BEM, there is no different
 
 If the class is added or removed over the life of the element (via JavaScript), it is a State.
 
-*If there are several common States being used in an application, you may wish to create States to be reused across many Blocks.*
-
-<!--- TODO global notation? --->
-
-Use the same notation, prefixed with: `u-`
+*If there are several common States being used in an application, you may wish to create reusable/global States.*
 
 ``` css
-.u-is-hidden { display: none !important; }
+/* Global */
+.is-visible { display: block !important; }
+
+/* Block */
+.Popout { ... }
+.Popout.is-visible {
+  /* No longer required */
+}
 ```
 
 ``` html
-<div class="Popout u-is-hidden" />
+<div class="Popout is-visible" />
 ```
+
+These global States should have a single responsibility, so that they can be reused.
+
+**States should not be included in the HTML or template markup.**
+
+Assuming a popup is hidden on page load:
+
+**Good:**
+``` css
+.Popout { display: none; }
+.Popout.is-visible { display: block; }
+```
+
+``` html
+<!-- HTML/Template file -->
+<div class="Popout" />
+```
+
+**Bad:**
+``` css
+.Popout { display: block; }
+.Popout.is-hidden { display: none; }
+```
+
+``` html
+<!-- HTML/Template file -->
+<div class="Popout is-hidden" />
+```
+
 
 ### Blockception
 
