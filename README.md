@@ -5,7 +5,6 @@
 5. [Selectors](#selectors)
 6. [Theory](#theory)
 7. [Whitespace](#whitespace)
-8. [Commenting](#commenting)
 
 # Formatting
 For clarity and consistency:
@@ -540,71 +539,6 @@ Separate different components with a block comment and 3 lines of whitespace:
  * MyDivs
  */
 .MyDivs { ... }
-```
-
-# Commenting
-When looking at CSS, you cannot know:
-
-* Where it is being used.
-* What other CSS relies on it.
-* What it relies on.
-* What the intended effect is.
-* What might break when you change it.
-
-**If there are any exceptions or unusual techniques being used, comment them.**
-
-``` html
-<div class="btn-group">
-  <button class="btn" />
-  <button class="btn" />
-</div>
-```
-
-Uncommon rules or interactions:
-``` css
-.btn-group {
-  overflow: hidden;
-}
-
-.btn {
-
-  /* Float cleared by .container overflow */
-  float: left;
-
-  /* box-sizing: border-box, so width = 100% */
-  border: 2px;
-  width: 50%;
-}
-```
-
-When doing calculations:
-``` css
-.btn-group {
-  height: 50px;
-}
-
-.btn {
-
-  /* Font + Padding + Border => height of 50px. */
-  font-size: 20px;
-  line-height: 1em;
-  padding: 14px;
-  border: 1px;
-}
-```
-
-[Float clearing](http://www.quirksmode.org/css/clearing.html)
-[Box-sizing](https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing)
-
-When use preprocessors (such as LESS or SASS), you can sometimes create self-documenting code:
-
-``` css
-$width: 100px;
-$border-width: 2px;
-
-.element {
-  width: $width - (2 * $border-width);
-}
 ```
 
 
