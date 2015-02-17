@@ -1,11 +1,11 @@
-<!---
 1. [Formatting](#formatting)
-2. [Whitespace](#whitespace)
-3. [Commenting](#commenting)
-4. [Selectors](#selectors)
-5. [BEM](#bem)
-6. [Architecture](#architecture)
---->
+2. [BEM](#bem)
+3. [Reusable classes](#reusable-components)
+4. [Architecture](#architecture)
+5. [Selectors](#selectors)
+6. [Theory](#theory)
+7. [Whitespace](#whitespace)
+8. [Commenting](#commenting)
 
 # Formatting
 For clarity and consistency:
@@ -180,6 +180,8 @@ States are a variation on modifiers - in the original BEM, there is no different
 If the class is added or removed over the life of the element (via JavaScript), it is a State.
 
 *If there are several common States being used in an application, you may wish to create States to be reused across many Blocks.*
+
+<!--- TODO global notation? --->
 
 Use the same notation, prefixed with: `u-`
 
@@ -606,15 +608,10 @@ $border-width: 2px;
 ```
 
 
-## Location Agnostic
-CSS is intended to be reusable. 
-
-## Open/Closed - Minimal Overrides
-<!--- TODO --->
-## Bad Abstraction
-<!--- TODO --->
-## DRY
-<!--- TODO --->
+<!--- TODO Location Agnostic - reusable css --->
+<!--- TODO Open/Closed - Minimal Overrides -->
+<!--- TODO Bad Abstraction -->
+<!--- TODO DRY -->
 
 
 # Further Reading
