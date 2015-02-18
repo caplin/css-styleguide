@@ -199,7 +199,7 @@ These global States should have a single responsibility, so that they can be reu
 
 **States should not be included in the HTML or template markup.**
 
-Assuming a popup is hidden on page load:
+Assuming a popup should be hidden on page load:
 
 **Good:**
 ``` css
