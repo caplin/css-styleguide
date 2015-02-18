@@ -16,7 +16,7 @@ For clarity and consistency:
 
 ``` css
 .class {
-  property: value;
+	property: value;
 }
 ```
 
@@ -27,8 +27,8 @@ These rules simplify diffs by ensuring only one change per line:
 ``` css
 .selector1,
 .selector2 {
-  property: value;
-  property: value;
+	property: value;
+	property: value;
 }
 ```
 
@@ -42,8 +42,8 @@ Comments are preceded by a newline.
 ``` css
 .class {
 
-  /* Hello World */
-  property: value;
+	/* Hello World */
+	property: value;
 }
 ```
 
@@ -52,17 +52,17 @@ Comments are preceded by a newline.
 ``` css
 .class
 {
-  ...
+	...
 }
 ```
 ``` css
 .class{
-  ...
+	...
 }
 ```
 ``` css
 .class {
-  property:value;
+	property:value;
 }
 ```
 
@@ -73,9 +73,9 @@ BEM stands for Block Element Modifier. It looks like this:
 
 ``` html
 <div class="Filter">
-  <div class="Filter-row" />
-  <div class="Filter-row Filter-row--highlight" />
-  <div class="Filter-row" />
+	<div class="Filter-row" />
+	<div class="Filter-row Filter-row--highlight" />
+	<div class="Filter-row" />
 </div>
 ```
 
@@ -110,9 +110,9 @@ Every selector related to the Block should be prepended by the Block name, this 
 Elements within a Block should be named with camelCase and separated from the Block by a hyphen.
 ``` html
 <div class="Filter">
-  <div class="Filter-element" />
-  <div class="Filter-element" />
-  <div class="Filter-anotherElement" />
+	<div class="Filter-element" />
+	<div class="Filter-element" />
+	<div class="Filter-anotherElement" />
 </div>
 ```
 ``` css
@@ -124,9 +124,9 @@ Elements within a Block should be named with camelCase and separated from the Bl
 
 ``` html
 <div class="Filter">
-  <div class="Filter-outerElement">
-    <div class="Filter-innerElement" />
-  </div>
+	<div class="Filter-outerElement">
+		<div class="Filter-innerElement" />
+	</div>
 </div>
 ```
 ``` css
@@ -154,9 +154,9 @@ You can have modifiers on Elements:
 
 ``` html
 <div class="Filter">
-  <div class="Filter-element" />
-  <div class="Filter-element Filter-element--large" />
-  <div class="Filter-element" />
+	<div class="Filter-element" />
+	<div class="Filter-element Filter-element--large" />
+	<div class="Filter-element" />
 </div>
 ```
 ``` css
@@ -187,7 +187,7 @@ If the class is added or removed over the life of the element (via JavaScript), 
 /* Block */
 .Popout { ... }
 .Popout.is-visible {
-  /* No longer required */
+	/* No longer required */
 }
 ```
 
@@ -231,10 +231,10 @@ Blocks can be used inside other Blocks.
 ``` html
 <!-- Outer Block -->
 <div class="Filter">
-  <div class="Filter-element">
+	<div class="Filter-element">
 	 <!-- Inner Block -->
 	 <a class="Button" />
-  </div>
+	</div>
 </div>
 ```
 
@@ -270,7 +270,7 @@ If in doubt, package CSS in the Blade with BEM, instead of creating App level CS
 
 ``` html
 <header class="Block">
-  <button class="btn" />
+	<button class="btn" />
 </header>
 ```
 
@@ -287,7 +287,7 @@ Could this be rewritten to make it reusable?
 
 ``` html
 <header class="Block">
-  <button class="btn btn--variantA" />
+	<button class="btn btn--variantA" />
 </header>
 ```
 
@@ -301,7 +301,7 @@ For example, moving from this:
 
 ``` html
 <header class="Header">
-  <img src="..." />
+	<img src="..." />
 </header>
 ```
 
@@ -312,10 +312,10 @@ For example, moving from this:
 To this:
 ``` html
 <header class="Header">
-  <div class="grid">
-    <img src="..." />
-    <p>Lorem ipsum</p>
-  </div>
+	<div class="grid">
+		<img src="..." />
+		<p>Lorem ipsum</p>
+	</div>
 </header>
 ```
 
@@ -386,9 +386,9 @@ footer a { ... }
 
 ``` html
 <nav class="SecondaryNav">
-  <a class="SecondaryNav-link" />
-  <a class="SecondaryNav-link" />
-  <a class="SecondaryNav-socialIcon" />
+	<a class="SecondaryNav-link" />
+	<a class="SecondaryNav-link" />
+	<a class="SecondaryNav-socialIcon" />
 </nav>
 ```
 
@@ -409,9 +409,9 @@ Classes should not be contextual, as they cannot be reused:
 
 ``` html
 <header>
-  <nav>
-    <a class="footer-color" />
-  </nav>
+	<nav>
+		<a class="footer-color" />
+	</nav>
 </header>
 ```
 
@@ -459,10 +459,10 @@ In our Filter example, we have two buttons inside one of our `Filter-rows`.
 
 ``` html
 <div class="Filter">
-  <div class="Filter-row">
-    <button />
-    <button />
-  </div>
+	<div class="Filter-row">
+		<button />
+		<button />
+	</div>
 </div>
 ```
 
@@ -470,10 +470,10 @@ If we wanted to style the buttons, the BEM method would be to add a new class:
 
 ``` html
 <div class="Filter">
-  <div class="Filter-row">
-    <button class="Filter-button" />
-    <button class="Filter-button" />
-  </div>
+	<div class="Filter-row">
+		<button class="Filter-button" />
+		<button class="Filter-button" />
+	</div>
 </div>
 ```
 
@@ -483,10 +483,10 @@ If the buttons are generic and used in multiple places, a generic class (e.g. `.
 
 ``` html
 <div class="Filter">
-  <div class="Filter-row">
-    <button class="button" />
-    <button class="button" />
-  </div>
+	<div class="Filter-row">
+		<button class="button" />
+		<button class="button" />
+	</div>
 </div>
 ```
 
@@ -496,10 +496,10 @@ In the majority of cases, elements in a BEM Block will need some generic ruleset
 
 ``` html
 <div class="Filter">
-  <div class="Filter-row">
-    <button class="button Filter-button" />
-    <button class="button Filter-button" />
-  </div>
+	<div class="Filter-row">
+		<button class="button Filter-button" />
+		<button class="button Filter-button" />
+	</div>
 </div>
 ```
 
@@ -520,25 +520,25 @@ Group related rules together and separate with newlines:
 ``` css
 .selector {
 
-  /* Box model */
-  display: inline-block;
-  margin: 0 auto;
-  padding: 10px 20px;
+	/* Box model */
+	display: inline-block;
+	margin: 0 auto;
+	padding: 10px 20px;
 
-  /* Styling */
-  color: #FFF;
-  background-color: #000;
+	/* Styling */
+	color: #FFF;
+	background-color: #000;
 
-  /* Fonts */
-  font-size: 14px;
-  font-weight: bold;
+	/* Fonts */
+	font-size: 14px;
+	font-weight: bold;
 }
 ```
 
 Separate closely related rulesets by a single line of whitespace:
 ``` css
 .MyButton {
-  ...
+	...
 }
 
 .MyButton--large {
