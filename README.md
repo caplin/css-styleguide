@@ -139,6 +139,12 @@ Elements within a Block should be named with camelCase and separated from the Bl
 .Filter-innerElement { ... }
 ```
 
+**Pseudo classes can be used ([assuming they are supported](http://www.quirksmode.org/css/selectors/)) to select elements if it is semantically correct to do so.**
+
+``` css
+.Filter-element { margin-top: 10px; }
+.Filter-element:first-child { margin-top: 0; }
+```
 
 ### Modifiers
 Modifiers (variants) follow the same naming as Elements, but are separated by a double hyphen.
@@ -226,34 +232,215 @@ Assuming a popup should be hidden on page load:
 
 ### Blockception
 
-Blocks can be used inside other Blocks.
+*Blocks can be used inside other Blocks.*
 
 ``` html
 <!-- Outer Block -->
 <div class="Filter">
 	<div class="Filter-element">
-	 <!-- Inner Block -->
-	 <a class="Button" />
+		 <!-- Inner Block -->
+		 <a class="Button" />
 	</div>
 </div>
 ```
 
-The `Button` Block will not know what styles or dimensions are applied to the `Filter` Block (if it needed to, `Button` should instead be an Element of the `Filter` Block).
+**Blocks must not depend on their location in the DOM.**
 
-Therefore the `Button` Block must be flexibly written and not depend on it's location in the DOM.
+If a Block is dependent on being contained within another Block or element, it can no longer be reused elsewhere in the Application.
 
+In this example, the `Button` Block will not know what styles or dimensions are applied to `.Filter`. Therefore the CSS for a Block must be written in a way that works regardless of the properties of it's container.
+
+The most common unknown will be the dimensions of the parent/container.
+
+**Blocks must not affect child elements.**
+
+``` css
+/* Bad */
+.Filter div {display: inline-block !important; }
+```
+
+As any Block could be placed within any other Block, Blocks must not use selectors that could affect these 'child' Blocks or elements.
 
 # Reusable Components
 
-<!--- TODO When to use, how to name --->
+## Utility Classes
+
+Utility classes must have a single responsibility. They are expected to be used frequently and as such, should rarely be modified after creation. 
+
+``` css
+.u-strip {
+	display: block !important;
+	width: 100% !important;
+}
+```
+
+*This is **reactive** use of `!important`, as we know that any element with the class of `strip` should span the entire width of it's parent.*
+
+``` css
+.u-positionCenter {
+	top: 0 !important;
+	right: 0 !important;
+	bottom: 0 !important;
+	left: 0 !important;
+	margin: auto !important;
+	position: absolute !important;
+}
+```
+
+#### Naming
+
+camelCase prefixed by `u-`, for example:
+
+``` css
+.u-myUtilClass {}
+```
+
+#### Use
+These classes can be added straight onto any element or Block.
+
+``` html
+<body>
+	<div class="Popup u-positionCenter is-visible">
+	</div>
+</body>
+```
+
+``` css
+.Popup {
+	display: none;
+	height: 100%;
+	width: 100%;
+	max-height: 400px;
+	max-width: 600px;
+	z-index: 9001;
+}
+.Popup.is-visible { display: block }
+```
+
+
+
+## Skin Classes
+
+Skin classes are similar to Utility classes, but deal with visual styles.
+
+If there are multiple elements or Blocks using similar rules, then we can factor them out.
+
+``` css
+.Header {
+	...
+	background: grey;
+	border: 1px solid #BBB;
+	border-radius: 2px;
+	...
+}
+
+
+.Box {
+	...
+	background: grey;
+	border: 1px solid #BBB;
+	border-radius: 2px;
+	...
+}
+```
+
+Elements can share several properties, however that does not mean they should all be extracted to the same skin class. The skin classes should be short (1-4 rules) and only contain related properties.
+
+``` css
+/* Group related properties */
+.skin-greyBox{
+	background: grey;
+	border: 1px solid #BBB;
+	border-radius: 2px;
+}
+```
+
+The properties below are not strongly related and this class cannot be reused in many situations. <!--- TODO expand/reword --->
+``` css
+/* Bad */
+.skin-main {
+	color: black;
+	background: white;
+	font-family: Helvetica;
+	border-radius: 5px;
+}
+```
+
+Using skins classes enforces consistency in the UI  and allows the app to be *partially* re-themed very quickly.
+
+<!--- TODO when colours inverted, how to separate correct skins --->
+
+
+## Components
+
+For reusable components (e.g. buttons) that require structure, style and potentially multiple elements, the HTML/CSS should follow the BEM/Block conventions.
+
+Create a bladeset called `components-bladeset` and create blades for each set of reusable components. These will act as a 'live' examples.
+
+A blade called `buttons` might have the following markup:
+
+``` html
+<!-- resources/html/view.html -->
+<div id="app.components.buttons.view-template">
+	<div class="components-buttons-blade">
+		<button class="Button ">Base</button>
+		<button class="Button Button--default">Default</button>
+		<button class="Button Button--primary">Primary</button>
+		<button class="Button Button--small">Small</button>
+		<button class="Button Button--large">Large</button>
+	</div>
+</div>
+```
+
+``` css
+/* themes/common/style.css */
+.Button {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+}
+
+.Button--small {
+	padding: 5px 10px;
+	font-size: 12px;
+}
+
+.Button--large {
+	padding: 10px 16px;
+	font-size: 18px;
+}
+
+.Button--default {
+	color: #333;
+	background-color: #fff;
+	border-color: #ccc;
+}
+
+/* themes/standard/style.css */
+.Button--primary {
+	color: #fff;
+	background-color: #337ab7;
+	border-color: #2e6da4;
+}
+```
+
+
+
 
 # Architecture
 
 All CSS at the Blade level should be BEM. The encapsulation provided by BEM means that no other elements can be affected by, or become dependent on, the CSS written in a particular blade. You should be able to add, modify or delete BEM Blocks without being concerned of any impact on other Blocks or parts of the App.
 
-Reusable classes should be at the App level or in external libraries.
+Utility and skin classes should be in the App level CSS or in external libraries.
 
-If in doubt, package CSS in the Blade with BEM, instead of creating App level CSS.
+If in doubt, write CSS in the Blade with BEM, instead of creating App level CSS. App level CSS should rarely be modified once created.
+
+Components should be in the `components` bladeset. Each set of components (e.g. buttons or inputs) should be a blade.
+
+
 
 
 # Selectors
@@ -574,10 +761,6 @@ Separate different components with a block comment and 3 lines of whitespace:
 ```
 
 
-<!--- TODO Location Agnostic - reusable css --->
-<!--- TODO Open/Closed - Minimal Overrides -->
-<!--- TODO Bad Abstraction -->
-<!--- TODO DRY -->
 
 
 # Further Reading
