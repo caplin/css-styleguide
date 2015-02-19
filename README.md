@@ -1,70 +1,15 @@
-1. [Formatting](#formatting)
+1. [Introduction](#introduction)
 2. [BEM](#bem)
 3. [Reusable classes](#reusable-components)
 4. [Architecture](#architecture)
 5. [Selectors](#selectors)
 6. [Theory](#theory)
-7. [Whitespace](#whitespace)
+7. [Formatting](#formatting)
+8. [Whitespace](#whitespace)
 
-# Formatting
-For clarity and consistency:
-* Indent with tabs. [So it is written, so let it be done](http://caplin.github.io/StyleGuide/).
-* Opening brace on selector line.
-* Closing brace on new line.
-* A single space before the opening bracket.
-* A single space after the colon.
+# Introduction
 
-``` css
-.class {
-	property: value;
-}
-```
 
-These rules simplify diffs by ensuring only one change per line:
-* All rules on separate lines.
-* All selectors on separate lines.
-
-``` css
-.selector1,
-.selector2 {
-	property: value;
-	property: value;
-}
-```
-
-The only exception is a class with one rule and one selector which performs a specific function. This can be on a single line:
-
-``` css
-.red { color: red; }
-```
-
-Comments are preceded by a newline.
-``` css
-.class {
-
-	/* Hello World */
-	property: value;
-}
-```
-
-**Wrong:**
-
-``` css
-.class
-{
-	...
-}
-```
-``` css
-.class{
-	...
-}
-```
-``` css
-.class {
-	property:value;
-}
-```
 
 # BEM
 [BEM Methodology](http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/).
@@ -274,7 +219,7 @@ Utility classes must have a single responsibility. They are expected to be used 
 }
 ```
 
-*This is **reactive** use of `!important`, as we know that any element with the class of `strip` should span the entire width of it's parent.*
+*(This is **proactive** use of `!important`, as we know that any element with the class of `strip` should span the entire width of it's parent.)*
 
 ``` css
 .u-positionCenter {
@@ -344,7 +289,7 @@ If there are multiple elements or Blocks using similar rules, then we can factor
 }
 ```
 
-Elements can share several properties, however that does not mean these properties should all be extracted to the same skin class. The skin classes should be short (1-4 rules) and only contain related properties.
+Elements can share several properties, however that does not mean these properties should all be extracted to the same skin class. The skin classes must be short (1-4 rules) and only contain related properties.
 
 <!--- TODO decide on skin syntax and update example --->
 ``` css
@@ -374,7 +319,7 @@ The properties below are *not* closely related and therefore this class cannot b
 }
 ```
 
-Note: It would *not* be correct to apply this class and then override some of the properties.
+Note: It is *not* correct to apply this class and then override some of the properties.
 
 ``` html
 <div class="Filter skin-main" />
@@ -399,10 +344,11 @@ camelCase prefixed by `skin-`, for example:
 .skin-borderRounded {}
 ```
 
+<!--- TODO UPDATE GITHUB EXAMPLE CSS/HTML --->
 
 #### CSS Preprocessors
 
-When using a CSS preprocessor (LESS, SASS etc.), variables should be created for commonly reused properties, especially colours. Mixins can be created instead of directly applying a Skin class.
+When using a CSS preprocessor (LESS, SASS etc.), variables must be created for commonly reused properties and all colours. Mixins will be used instead of directly applying a Skin class to the markup.
 
 ``` css
 // Bootstrap defaults
@@ -433,9 +379,9 @@ When using a CSS preprocessor (LESS, SASS etc.), variables should be created for
 
 ## Components
 
-For reusable components (e.g. buttons) that require structure, style and potentially multiple elements, the HTML/CSS should follow the BEM/Block conventions. 
+For reusable components (e.g. buttons) that require structure, style and potentially multiple elements, the HTML/CSS must follow the BEM/Block conventions. 
 
-They should be commented using the [Knyle Style Sheets (KSS)](http://warpspire.com/kss/syntax/) syntax to create a living styleguide for developers to view, edit and copy examples from. A good example of KSS in action is the [Github Styleguide](https://github.com/styleguide/css).
+They are to be commented using the [Knyle Style Sheets (KSS)](http://warpspire.com/kss/syntax/) syntax to create a living styleguide for developers to view, edit and copy examples from. A good example of KSS in action is the [Github Styleguide](https://github.com/styleguide/css).
 
 ``` css
 /*
@@ -491,9 +437,9 @@ They should be commented using the [Knyle Style Sheets (KSS)](http://warpspire.c
 
 # Architecture
 
-All CSS at the Blade level should be BEM. The encapsulation provided by BEM means that no other elements can be affected by, or become dependent on, the CSS written in a particular blade. You should be able to add, modify or delete BEM Blocks without being concerned of any impact on other Blocks or parts of the App.
+All CSS at the Blade level must be BEM. The encapsulation provided by BEM means that no other elements can be affected by, or become dependent on, the CSS written in a particular blade. You need to be able to add, modify or delete BEM Blocks without being concerned of any impact on other Blocks or parts of the App.
 
-Utility, skin and component classes should be in the `default-aspect` or in external libraries.
+Utility, skin and component classes will be in the `default-aspect` or in external libraries.
 
 If in doubt, write CSS in the Blade with BEM, instead of creating App/Aspect level CSS. App level CSS should rarely be modified once created.
 
@@ -752,6 +698,68 @@ Factoring out the reusable component from the CSS (in this case `.button`) and u
 
 *Note: Composing the style of an element with multiple classes is one of the main principles of [OOCSS](http://appendto.com/2014/04/oocss/). The other is the separation of structural and skin classes.*
 
+
+
+
+# Formatting
+For clarity and consistency:
+* Indent with tabs. [So it is written, so let it be done](http://caplin.github.io/StyleGuide/).
+* Opening brace on selector line.
+* Closing brace on new line.
+* A single space before the opening bracket.
+* A single space after the colon.
+
+``` css
+.class {
+	property: value;
+}
+```
+
+These rules simplify diffs by ensuring only one change per line:
+* All rules on separate lines.
+* All selectors on separate lines.
+
+``` css
+.selector1,
+.selector2 {
+	property: value;
+	property: value;
+}
+```
+
+The only exception is a class with one rule and one selector which performs a specific function. This can be on a single line:
+
+``` css
+.red { color: red; }
+```
+
+Comments are preceded by a newline.
+``` css
+.class {
+
+	/* Hello World */
+	property: value;
+}
+```
+
+**Wrong:**
+
+``` css
+.class
+{
+	...
+}
+```
+``` css
+.class{
+	...
+}
+```
+``` css
+.class {
+	property:value;
+}
+```
 
 
 
