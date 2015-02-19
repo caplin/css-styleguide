@@ -178,7 +178,7 @@ You can have modifiers on Elements:
 .Filter {...}
 .Filter.is-selected { border: red; }
 ```
-**The State class must chained with the relevant Block or Element.**
+**The State class must be chained with the relevant Block or Element.**
 
 States are a variation on modifiers - in the original BEM, there is no differentiation.
 
@@ -259,7 +259,7 @@ The most common unknown will be the dimensions of the parent/container.
 .Filter div {display: inline-block !important; }
 ```
 
-As any Block could be placed within any other Block, Blocks must not use selectors that could affect these 'child' Blocks or elements.
+As any Block could be placed within any other Block, Blocks must not use selectors that could affect these 'child' Blocks or elements. Use Element classes instead (e.g. `Filter-element`).
 
 # Reusable Components
 
@@ -335,7 +335,7 @@ If there are multiple elements or Blocks using similar rules, then we can factor
 }
 
 
-.Box {
+.Filter {
 	...
 	background: grey;
 	border: 1px solid #BBB;
@@ -344,18 +344,26 @@ If there are multiple elements or Blocks using similar rules, then we can factor
 }
 ```
 
-Elements can share several properties, however that does not mean they should all be extracted to the same skin class. The skin classes should be short (1-4 rules) and only contain related properties.
+Elements can share several properties, however that does not mean these properties should all be extracted to the same skin class. The skin classes should be short (1-4 rules) and only contain related properties.
 
+<!--- TODO decide on skin syntax and update example --->
 ``` css
-/* Group related properties */
-.skin-greyBox{
+.skin-box {
 	background: grey;
 	border: 1px solid #BBB;
 	border-radius: 2px;
 }
 ```
 
-The properties below are not strongly related and this class cannot be reused in many situations. <!--- TODO expand/reword --->
+Assuming the UI in our app calls for many elements to have a grey background with a rounded border, this can be reused in different Blocks.
+
+``` html
+<div class="Filter skin-box">
+	<div class="Filter-element" />
+</div>
+```
+
+The properties below are *not* closely related and therefore this class cannot be reused in many situations.
 ``` css
 /* Bad */
 .skin-main {
@@ -366,34 +374,86 @@ The properties below are not strongly related and this class cannot be reused in
 }
 ```
 
-Using skins classes enforces consistency in the UI  and allows the app to be *partially* re-themed very quickly.
-
-<!--- TODO when colours inverted, how to separate correct skins --->
-
-
-## Components
-
-For reusable components (e.g. buttons) that require structure, style and potentially multiple elements, the HTML/CSS should follow the BEM/Block conventions.
-
-Create a bladeset called `components-bladeset` and create blades for each set of reusable components. These will act as a 'live' examples.
-
-A blade called `buttons` might have the following markup:
+Note: It would *not* be correct to apply this class and then override some of the properties.
 
 ``` html
-<!-- resources/html/view.html -->
-<div id="app.components.buttons.view-template">
-	<div class="components-buttons-blade">
-		<button class="Button ">Base</button>
-		<button class="Button Button--default">Default</button>
-		<button class="Button Button--primary">Primary</button>
-		<button class="Button Button--small">Small</button>
-		<button class="Button Button--large">Large</button>
-	</div>
-</div>
+<div class="Filter skin-main" />
 ```
 
 ``` css
-/* themes/common/style.css */
+/* Wrong */
+.Filter {
+	color: red;
+	background: white;
+}
+```
+
+**Using skins classes enforces consistency in the UI and allows the app to be *partially* re-themed.**
+
+
+#### Naming
+camelCase prefixed by `skin-`, for example:
+
+``` css
+.skin-border {}
+.skin-borderRounded {}
+```
+
+
+#### CSS Preprocessors
+
+When using a CSS preprocessor (LESS, SASS etc.), variables should be created for commonly reused properties, especially colours. Mixins can be created instead of directly applying a Skin class.
+
+``` css
+// Bootstrap defaults
+@gray-base:              #000;
+@gray-dark:              lighten(@gray-base, 20%);
+@gray:                   lighten(@gray-base, 33.5%);
+@gray-light:             lighten(@gray-base, 46.7%);
+```
+
+``` css
+.skin-borderRounded {
+	border: 1px solid @grey-dark;
+	border-radius: 5px;
+}
+```
+
+``` css
+.Filter {
+	background-color: @grey;
+	.skin-borderRounded;
+	...
+}
+```
+
+``` html
+<div class="Filter" />
+```
+
+## Components
+
+For reusable components (e.g. buttons) that require structure, style and potentially multiple elements, the HTML/CSS should follow the BEM/Block conventions. 
+
+They should be commented using the [Knyle Style Sheets (KSS)](http://warpspire.com/kss/syntax/) syntax to create a living styleguide for developers to view, edit and copy examples from. A good example of KSS in action is the [Github Styleguide](https://github.com/styleguide/css).
+
+``` css
+/*
+ Buttons
+
+ The majority of buttons in the site are built from this class.
+
+ Markup: 
+ <button class="Button {{modifier_class}}">Button Element</button>
+
+ .Button--small         - Make the button smaller.
+ .Button--large         - Make the button larger.
+ .Button--default       - Apply the default styling to the button.
+ .Button--primary		- Apply primary styling to the button. e.g. used for confirmation button in dialog.
+
+ Styleguide 1
+*/
+
 .Button {
 	display: inline-block;
 	padding: 6px 12px;
@@ -419,7 +479,6 @@ A blade called `buttons` might have the following markup:
 	border-color: #ccc;
 }
 
-/* themes/standard/style.css */
 .Button--primary {
 	color: #fff;
 	background-color: #337ab7;
@@ -434,11 +493,9 @@ A blade called `buttons` might have the following markup:
 
 All CSS at the Blade level should be BEM. The encapsulation provided by BEM means that no other elements can be affected by, or become dependent on, the CSS written in a particular blade. You should be able to add, modify or delete BEM Blocks without being concerned of any impact on other Blocks or parts of the App.
 
-Utility and skin classes should be in the App level CSS or in external libraries.
+Utility, skin and component classes should be in the `default-aspect` or in external libraries.
 
-If in doubt, write CSS in the Blade with BEM, instead of creating App level CSS. App level CSS should rarely be modified once created.
-
-Components should be in the `components` bladeset. Each set of components (e.g. buttons or inputs) should be a blade.
+If in doubt, write CSS in the Blade with BEM, instead of creating App/Aspect level CSS. App level CSS should rarely be modified once created.
 
 
 
