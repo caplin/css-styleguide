@@ -9,10 +9,16 @@
 
 # Introduction
 
+The purpose of this document is to specify a CSS structure that improves the componentisation and encapsulation of Caplin CSS.
+
+A mix of [BEM](https://en.bem.info/), [OOCSS](http://appendto.com/2014/04/oocss/) and [SuitCSS](http://suitcss.github.io/) has been chosen as the basis.
+
+Using BEM will mean that all CSS in a blade is encapsulated and can be modified or deleted at will.
+
+
 
 
 # BEM
-[BEM Methodology](http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/).
 
 BEM stands for Block Element Modifier. It looks like this:
 
@@ -41,8 +47,8 @@ In this example, we want the first row to stand out, hence the modifier of `--hi
 ### Blocks
 The single root element for every Block.
 
-The Block should be named with PascalCase (camelCase with a capitalised first letter).
-Every selector related to the Block should be prepended by the Block name, this namespaces the Block and ensures styles do not leak or conflict with other parts of the page.
+The Block is be named with PascalCase (camelCase with a capitalised first letter).
+Every selector related to the Block is prepended by the Block name, this namespaces the Block and ensures styles do not leak or conflict with other parts of the page.
 ``` html
 <div class="Filter" />
 ```
@@ -52,7 +58,7 @@ Every selector related to the Block should be prepended by the Block name, this 
 
 
 ### Elements
-Elements within a Block should be named with camelCase and separated from the Block by a hyphen.
+Elements within a Block are named with camelCase and separated from the Block by a hyphen.
 ``` html
 <div class="Filter">
 	<div class="Filter-element" />
@@ -65,7 +71,7 @@ Elements within a Block should be named with camelCase and separated from the Bl
 .Filter-anotherElement {...}
 ```
 
-**Note: The BEM 'tree' does not replicate the DOM tree. Elements within Elements should *not* be named as such.**
+**Note: The BEM 'tree' does not replicate the DOM tree. Elements within Elements must *not* be named as such.**
 
 ``` html
 <div class="Filter">
@@ -146,9 +152,9 @@ If the class is added or removed over the life of the element (via JavaScript), 
 <div class="Popout is-visible" />
 ```
 
-These global States should have a single responsibility, so that they can be reused.
+These global States must only have a single responsibility, so that they can be reused.
 
-**States should not be included in the HTML or template markup.**
+**States must not be included in the HTML or template markup.**
 
 Assuming a popup should be hidden on page load:
 
@@ -290,7 +296,7 @@ If there are multiple elements or Blocks using similar rules, then we can factor
 ```
 
 Elements can share several properties, however that does not mean these properties should all be extracted to the same skin class. The skin classes must be short (1-4 rules) and only contain related properties.
-
+<!--- TODO structural OOCSS classes, are they utils? --->
 <!--- TODO decide on skin syntax and update example --->
 ``` css
 .skin-box {
@@ -643,7 +649,7 @@ a.Block-link { ... }
 
 
 ## Further BEM
-A child element of a Block should only be a BEM Element (of that Block), if the element *should* only ever be used within that block.
+A child element of a Block is only a BEM Element (of that Block), if the element *must* only ever be used within that block.
 
 In our Filter example, we have two buttons inside one of our `Filter-rows`.
 
@@ -832,6 +838,7 @@ Separate different components with a block comment and 3 lines of whitespace:
 
 * [CSS Guidelines](http://cssguidelin.es/)
 * [CSS Wizardry - BEM](http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/)
+* [Smashing Magazine - OOCSS Introduction](http://www.smashingmagazine.com/2011/12/12/an-introduction-to-object-oriented-css-oocss/)
 * [CSS Wizardry - Code Smells](http://csswizardry.com/2012/11/code-smells-in-css/)
 * [The SASS Way - The Inception Rule](http://thesassway.com/beginner/the-inception-rule)
 * [Drew Barontini - Single Responsibility](http://drewbarontini.com/articles/single-responsibility/)
