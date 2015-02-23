@@ -296,8 +296,7 @@ If there are multiple elements or Blocks using similar rules, then we can factor
 ```
 
 Elements can share several properties, however that does not mean these properties should all be extracted to the same skin class. The skin classes must be short (1-4 rules) and only contain related properties.
-<!--- TODO structural OOCSS classes, are they utils? --->
-<!--- TODO decide on skin syntax and update example --->
+
 ``` css
 .skin-box {
 	background: grey;
@@ -317,7 +316,7 @@ Assuming the UI in our app calls for many elements to have a grey background wit
 The properties below are *not* closely related and therefore this class cannot be reused in many situations.
 ``` css
 /* Bad */
-.skin-main {
+.skin-text {
 	color: black;
 	background: white;
 	font-family: Helvetica;
@@ -350,7 +349,6 @@ camelCase prefixed by `skin-`, for example:
 .skin-borderRounded {}
 ```
 
-<!--- TODO UPDATE GITHUB EXAMPLE CSS/HTML --->
 
 #### CSS Preprocessors
 
