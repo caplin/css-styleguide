@@ -1,3 +1,18 @@
+/*
+ Buttons
+
+ The majority of buttons in the app are built from this class.
+
+ Markup:
+ <button class="Button {{modifier_class}}">Button Element</button>
+
+ .Button--default   - Default styling.
+ .Button--primary   - Primary (e.g. confirm) styling.
+ .Button--option    - Styling for button groups with <option /> type behaviour.
+ .is-active         - Sets the active state to the button.
+
+ Styleguide 1.1
+*/
 .Button {
 	display: inline-block;
 	text-align: center;
@@ -10,6 +25,7 @@
 	font-size: 12px;
 	height: 30px;
 	padding: 8px 16px;
+  border: 1px solid transparent;
 }
 
 
