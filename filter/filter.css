@@ -4,11 +4,12 @@
 	border-radius: 2px;
 }
 
+
 .Filter-row {
 	padding: 8px 15px;
 }
 
-.Filter-row.skin--alt {
+.Filter-row.skin-alt {
 	border-style: solid none;
 }
 
