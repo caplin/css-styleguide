@@ -212,6 +212,9 @@ The most common unknown will be the dimensions of the parent/container.
 
 As any Block could be placed within any other Block, Blocks must not use selectors that could affect these 'child' Blocks or elements. Use Element classes instead (e.g. `Filter-element`).
 
+
+
+
 # Reusable Components
 
 ## Utility Classes
@@ -267,7 +270,6 @@ These classes can be added straight onto any element or Block.
 }
 .Popup.is-visible { display: block }
 ```
-
 
 
 ## Skin Classes
@@ -381,11 +383,11 @@ When using a CSS preprocessor (LESS, SASS etc.), variables must be created for c
 <div class="Filter" />
 ```
 
-## Components
 
-For reusable components (e.g. buttons) that require structure, style and potentially multiple elements, the HTML/CSS must follow the BEM/Block conventions. 
+## Blocks
+For reusable components (e.g. buttons) that require structure, style and (possibly) multiple elements, the BEM/Block conventions must be followed.
 
-They are to be commented using the [Knyle Style Sheets (KSS)](http://warpspire.com/kss/syntax/) syntax to create a living styleguide for developers to view, edit and copy examples from. A good example of KSS in action is the [Github Styleguide](https://github.com/styleguide/css).
+As the HTML/CSS will likely be maintained and reused, it must be commented using the [Knyle Style Sheets (KSS)](http://warpspire.com/kss/syntax/) syntax to create a living styleguide for developers to view, edit and copy examples from. A good example of KSS in action is the [Github Styleguide](https://github.com/styleguide/css).
 
 ``` css
 /*
@@ -398,10 +400,10 @@ They are to be commented using the [Knyle Style Sheets (KSS)](http://warpspire.c
 
  .Button--small         - Make the button smaller.
  .Button--large         - Make the button larger.
- .Button--default       - Apply the default styling to the button.
- .Button--primary		- Apply primary styling to the button. e.g. used for confirmation button in dialog.
+ .Button--default       - Apply default styling to the button.
+ .Button--primary		- Apply primary styling to the button.
 
- Styleguide 1
+ Styleguide 1.1
 */
 
 .Button {
@@ -409,8 +411,6 @@ They are to be commented using the [Knyle Style Sheets (KSS)](http://warpspire.c
 	padding: 6px 12px;
 	margin-bottom: 0;
 	font-size: 14px;
-	border: 1px solid transparent;
-	border-radius: 4px;
 }
 
 .Button--small {
@@ -426,15 +426,20 @@ They are to be commented using the [Knyle Style Sheets (KSS)](http://warpspire.c
 .Button--default {
 	color: #333;
 	background-color: #fff;
-	border-color: #ccc;
+	border: 1px solid #ccc;
+	border-radius: 4px;
 }
 
 .Button--primary {
 	color: #fff;
 	background-color: #337ab7;
-	border-color: #2e6da4;
+	border: 1px solid #2e6da4;
+	border-radius: 4px;
 }
 ```
+
+
+**Any CSS that is context specific must be in a Modifier or State.** Think about reuse in different parts of the App.
 
 
 
@@ -559,6 +564,21 @@ It does have a place when attempting to ensure a class will always work as expec
 .hidden { display: none !important; }
 ```
 
+### No null rules
+
+Setting a CSS property to a default or null value is rarely the correct course of action. It is generally a sign that the property has been set too early in the CSS.
+
+``` css
+/* Bad */
+selector {
+	float: none;
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+```
+
+
 
 
 # Theory
@@ -625,14 +645,17 @@ Specificity is increased when the descendant selector is used.
 /* Is more specific than this: */
 .Block-link { ... }
 
-/* Now you have a specificity war with your own code, leading to either: */
-header .Block-link
+/*
+Now when `.Block-link` needs to override rules from `.Block a`, there will be a specificity war, leading to either: 
+*/
+header .Block-link { ... }
 a.Block-link { ... }
 .Block-link { ... !important }
 
 /* And the cycle will continue... */
 ```
 
+Additionally:
 
 ``` css
 /* Can no longer be used outside header */
@@ -838,6 +861,7 @@ Separate different components with a block comment and 3 lines of whitespace:
 * [CSS Wizardry - BEM](http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/)
 * [Smashing Magazine - OOCSS Introduction](http://www.smashingmagazine.com/2011/12/12/an-introduction-to-object-oriented-css-oocss/)
 * [CSS Wizardry - Code Smells](http://csswizardry.com/2012/11/code-smells-in-css/)
-* [The SASS Way - The Inception Rule](http://thesassway.com/beginner/the-inception-rule)
+* [CSS Wizardry - Open/Closed](http://csswizardry.com/2012/06/the-open-closed-principle-applied-to-css/)
 * [Drew Barontini - Single Responsibility](http://drewbarontini.com/articles/single-responsibility/)
+* [The SASS Way - The Inception Rule](http://thesassway.com/beginner/the-inception-rule)
 * [SMACSS - Applicability](https://smacss.com/book/applicability)
