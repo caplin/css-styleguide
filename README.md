@@ -181,7 +181,7 @@ Assuming a popup should be hidden on page load:
 ```
 
 
-### Blockception
+### Nested Blocks
 
 *Blocks can be used inside other Blocks.*
 
