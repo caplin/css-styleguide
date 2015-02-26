@@ -420,11 +420,13 @@ As the HTML/CSS will likely be maintained and reused, it must be commented using
 
 # Architecture
 
+Each BEM Block must be in it's own CSS file.
+
 All CSS at the Blade level must be BEM. The encapsulation provided by BEM means that no other elements can be affected by, or become dependent on, the CSS written in a particular blade. You need to be able to add, modify or delete BEM Blocks without being concerned of any impact on other Blocks or parts of the App.
 
 Utility, skin and component classes will be in the `default-aspect` or in external libraries.
 
-If in doubt, write CSS in the Blade with BEM, instead of creating App/Aspect level CSS. App level CSS should rarely be modified once created.
+If in doubt, write CSS in the Blade with BEM, instead of creating App/Aspect level CSS. App level CSS should rarely be modified once created, whereas it is possible to refactor your BEM CSS.
 
 
 
@@ -839,23 +841,7 @@ Separate loosly related rulesets by two lines of whitespace:
 .MyOtherButton--large { ... }
 ```
 
-Separate different components with a block comment and 3 lines of whitespace:
-``` css
-/**
- * MyButtons
- */
-.MyButtons { ... }
-
-
-
-/**
- * MyDivs
- */
-.MyDivs { ... }
-```
-
-
-
+If rulesets are unrelated, they should be in a separate file.
 
 # Further Reading
 
