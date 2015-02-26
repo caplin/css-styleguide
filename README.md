@@ -74,6 +74,22 @@ Elements within a Block are named with camelCase and separated from the Block by
 **Note: The BEM 'tree' does not replicate the DOM tree. Elements within Elements must *not* be named as such.**
 
 ``` html
+<!-- Wrong -->
+<div class="Filter">
+	<div class="Filter-outerElement">
+		<div class="Filter-outerElement-innerElement" />
+	</div>
+</div>
+```
+
+``` css
+/* Wrong */
+.Filter-outerElement { ... }
+.Filter-outerElement-innerElement { ... }
+```
+
+```html
+<!-- Correct -->
 <div class="Filter">
 	<div class="Filter-outerElement">
 		<div class="Filter-innerElement" />
@@ -81,10 +97,6 @@ Elements within a Block are named with camelCase and separated from the Block by
 </div>
 ```
 ``` css
-/* Incorrect */
-.Filter-outerElement { ... }
-.Filter-outerElement-innerElement { ... }
-
 /* Correct */
 .Filter-outerElement { ... }
 .Filter-innerElement { ... }
@@ -126,33 +138,23 @@ You can have modifiers on Elements:
 <div class="Filter is-selected" />
 ```
 ``` css
-.Filter {...}
+.Filter { ... }
 .Filter.is-selected { border: red; }
 ```
 **The State class must be chained with the relevant Block or Element.**
+
+If this is not done, encapsulation will be broken.
+
+``` css
+/* Forbidden. */
+.Filter { ... }
+.is-selected { ... }
+```
 
 States are a variation on modifiers - in the original BEM, there is no differentiation.
 
 If the class is added or removed over the life of the element (via JavaScript), it is a State.
 
-*If there are several common States being used in an application, you may wish to create reusable/global States.*
-
-``` css
-/* Global */
-.is-visible { display: block !important; }
-
-/* Block */
-.Popout { ... }
-.Popout.is-visible {
-	/* No longer required */
-}
-```
-
-``` html
-<div class="Popout is-visible" />
-```
-
-These global States must only have a single responsibility, so that they can be reused.
 
 **States must not be included in the HTML or template markup.**
 
@@ -206,13 +208,17 @@ The most common unknown will be the dimensions of the parent/container.
 **Blocks must not affect child elements.**
 
 ``` css
+/* Good */
+.Filter--xyzElement {display: inline-block; }
+
 /* Bad */
-.Filter div {display: inline-block !important; }
+.Filter div {display: inline-block; }
 ```
 
 As any Block could be placed within any other Block, Blocks must not use selectors that could affect these 'child' Blocks or elements. Use Element classes instead (e.g. `Filter-element`).
 
-
+**The exception to this rule is when Blocks are explicitly designed to contain other Blocks.** 
+*For example, a `ButtonGroup` Block which aligns a group of child `Button` Blocks. See [Selectors#Direct Child](#direct-child).*
 
 
 # Reusable Components
@@ -352,42 +358,10 @@ camelCase prefixed by `skin-`, for example:
 ```
 
 
-#### CSS Preprocessors
-
-When using a CSS preprocessor (LESS, SASS etc.), variables must be created for commonly reused properties and all colours. Mixins will be used instead of directly applying a Skin class to the markup.
-
-``` css
-// Bootstrap defaults
-@gray-base:              #000;
-@gray-dark:              lighten(@gray-base, 20%);
-@gray:                   lighten(@gray-base, 33.5%);
-@gray-light:             lighten(@gray-base, 46.7%);
-```
-
-``` css
-.skin-borderRounded {
-	border: 1px solid @grey-dark;
-	border-radius: 5px;
-}
-```
-
-``` css
-.Filter {
-	background-color: @grey;
-	.skin-borderRounded;
-	...
-}
-```
-
-``` html
-<div class="Filter" />
-```
-
-
 ## Blocks
 For reusable components (e.g. buttons) that require structure, style and (possibly) multiple elements, the BEM/Block conventions must be followed.
 
-As the HTML/CSS will likely be maintained and reused, it must be commented using the [Knyle Style Sheets (KSS)](http://warpspire.com/kss/syntax/) syntax to create a living styleguide for developers to view, edit and copy examples from. A good example of KSS in action is the [Github Styleguide](https://github.com/styleguide/css).
+As the HTML/CSS will likely be maintained and reused, it must be commented using the [Knyle Style Sheets (KSS)](http://warpspire.com/kss/syntax/) syntax, so a living styleguide can be created for developers to view, edit and copy examples from. A good example of KSS in action is the [Github Styleguide](https://github.com/styleguide/css).
 
 ``` css
 /*
@@ -520,6 +494,31 @@ To this:
 
 Will break your CSS.
 
+**Use the direct child selector where it makes semantic sense to do so.** 
+For example, creating a new BEM Block to contain `.Buttons`:
+
+``` css
+.ButtonGroup { ... }
+
+.ButtonGroup > .Button {
+	float: left;
+	margin-left: 10px;
+}
+
+.ButtonGroup > .Button:first-child {
+	margin-left: 0;
+}
+```
+``` html
+<div class="ButtonGroup">
+	<button class="Button"></div>
+	<button class="Button"></div>
+	<button class="Button"></div>
+</div>
+```
+
+See: [Bootstrap button groups](http://getbootstrap.com/2.3.2/components.html#buttonGroups)
+
 
 ### No ID's.
 ID's are allowed for JavaScript and fragment identifiers, but should never be used in CSS.
@@ -584,7 +583,7 @@ selector {
 # Theory
 
 ## Selector Intent
-The selectors used when creating rulesets should match the *intent* behind the ruleset.
+The selectors used when creating a rule should match the *intent* behind the rule.
 
 For example, when styling a new navigation (which happens to be in the footer):
 ``` css
@@ -760,11 +759,15 @@ The only exception is a class with one rule and one selector which performs a sp
 .red { color: red; }
 ```
 
-Comments are preceded by a newline.
+Comments are preceded by a newline, unless at the beginning of a ruleset.
 ``` css
 .class {
-
-	/* Hello World */
+	/* Good */
+	property: value;
+			
+	/* Good */
+	property: value;
+	/* Bad */
 	property: value;
 }
 ```
@@ -798,7 +801,6 @@ Group related rules together and separate with newlines:
 
 ``` css
 .selector {
-
 	/* Box model */
 	display: inline-block;
 	margin: 0 auto;
