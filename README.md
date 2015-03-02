@@ -519,7 +519,7 @@ For example, creating a new BEM Block to contain `.Buttons`:
 </div>
 ```
 
-See: [Bootstrap button groups](http://getbootstrap.com/2.3.2/components.html#buttonGroups)
+See: [Bootstrap button groups](http://getbootstrap.com/components/#btn-groups)
 
 
 ### No ID's.
@@ -670,7 +670,7 @@ a.Block-link { ... }
 ```
 
 
-## Further BEM
+## More BEM
 A child element of a Block is only a BEM Element (of that Block), if the element *must* only ever be used within that block.
 
 In our Filter example, we have two buttons inside one of our `Filter-rows`.
@@ -697,34 +697,32 @@ If we wanted to style the buttons, the BEM method would be to add a new class:
 
 However this should only be done if the `Filter-buttons` will *only* be used inside a `Filter` Block.
 
-If the buttons are generic and used in multiple places, a generic class (e.g. `.button`) should be used:
+If the buttons are generic and will be used in multiple places, a generic Block (e.g. `.Button`) should be created (if necessary) and used:
 
 ``` html
 <div class="Filter">
 	<div class="Filter-row">
-		<button class="button" />
-		<button class="button" />
+		<button class="Button" />
+		<button class="Button" />
 	</div>
 </div>
 ```
 
-The `.button` CSS should be flexible enough to allow the `button` class to be used in a variety of situations. Aka Location agnostic (not dependent on it's container).
+The `.Button` CSS must be flexible enough to allow the `Button` class to be used in a variety of situations. Aka Location agnostic - not dependent on it's container.
 
-In the majority of cases, elements in a BEM Block will need some generic rulesets *and* some rules specific to their location. Rather than duplicating rules in CSS, the element can be 'composed' with several CSS classes.
+In the majority of cases, elements in a BEM Block will need some generic rulesets *and* some rules specific to their location. Rather than duplicating rules in CSS, the element can be 'composed' with several CSS classes. <!--- TODO Check this --->
 
 ``` html
 <div class="Filter">
 	<div class="Filter-row">
-		<button class="button Filter-button" />
-		<button class="button Filter-button" />
+		<button class="Button Filter-button" />
+		<button class="Button Filter-button" />
 	</div>
 </div>
 ```
 
-Factoring out the reusable component from the CSS (in this case `.button`) and using `Filter-row` to apply button styling specifically for a `Filter` Block, removes duplication and let's us reuse the `button` class. 
+Factoring out the reusable component from the CSS (in this case `.Button`) and using `Filter-row` to apply button styling specifically for a `Filter` Block, removes duplication and let's us reuse the `button` class. 
 
-
-*Note: Composing the style of an element with multiple classes is one of the main principles of [OOCSS](http://appendto.com/2014/04/oocss/). The other is the separation of structural and skin classes.*
 
 
 
