@@ -710,7 +710,7 @@ If the buttons are generic and will be used in multiple places, a generic Block 
 
 The `.Button` CSS must be flexible enough to allow the `Button` class to be used in a variety of situations. Aka Location agnostic - not dependent on it's container.
 
-In the majority of cases, elements in a BEM Block will need some generic rulesets *and* some rules specific to their location. Rather than duplicating rules in CSS, the element can be 'composed' with several CSS classes. <!--- TODO Check this --->
+In the majority of cases, elements in a BEM Block will need some generic rulesets *and* some rules specific to their location. Rather than duplicating rules in CSS, the element can be 'composed' with several CSS classes. 
 
 ``` html
 <div class="Filter">
@@ -721,9 +721,17 @@ In the majority of cases, elements in a BEM Block will need some generic ruleset
 </div>
 ```
 
-Factoring out the reusable component from the CSS (in this case `.Button`) and using `Filter-row` to apply button styling specifically for a `Filter` Block, removes duplication and let's us reuse the `button` class. 
+``` css
+.Button { ... }
 
+.Filter { ... }
+.Filter-row { ... }
+.Filter-button.Button { ... }
+```
 
+Factoring out the reusable component from the CSS (in this case `.Button`) and using `Filter-row` to apply button styling specifically for a `Filter` Block, removes duplication and let's us reuse the `Button` class. 
+
+TODO: would a normal BEM modifier break encapsulation for this?
 
 
 
